@@ -1,0 +1,13 @@
+version: "0.1"
+services:
+  wsop:
+    container_name: wsop
+    build: /mnt/user/code/wsop/
+    environment:
+      - COLLECTION_URL=https://www.pokergo.com/collections/e0924522-15d4-4bee-b3ba-286ba37a3f4f
+      - USERNAME=
+      - PASSWORD=
+      - HUB_URL=http://192.168.1.101:4444/wd/hub
+    volumes:
+      - /mnt/user/wsop:/mnt/wsop/
+    network_mode: bridge
