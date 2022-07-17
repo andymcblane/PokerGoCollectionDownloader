@@ -35,6 +35,7 @@ d = DesiredCapabilities.CHROME
 d['goog:loggingPrefs'] = { 'performance':'ALL' }
 
 driver = webdriver.Remote(os.environ["HUB_URL"], desired_capabilities=d, options=chrome_options)
+# driver = webdriver.Chrome("C:\\chromedriver.exe", desired_capabilities=d, options=chrome_options)
 
 
 driver.get("https://www.pokergo.com/login")
