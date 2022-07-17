@@ -1,6 +1,6 @@
 # PokerGoCollectionDownloader
 
-PokerGo seem to think it's an OK UX to intrude on the video player (despite being a paying customer!)
+PokerGo seem to think it's an acceptable user experience to intrude on the video player (despite being a paying customer!)
 
 Let's just download the mp4 files directly and serve them ourselves. 
 
