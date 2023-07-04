@@ -24,19 +24,14 @@ chrome_options.add_argument('--disable-dev-shm-usage')
 
 WRITE_LOCATION = "/mnt/wsop/"
 COLLECTION_URL = os.environ["COLLECTION_URL"]
-
-
 def process_browser_log_entry(entry):
     response = json.loads(entry['message'])['message']
     return response
 
 
-d = DesiredCapabilities.CHROME
-d['goog:loggingPrefs'] = { 'performance':'ALL' }
-
-driver = webdriver.Remote(os.environ["HUB_URL"], desired_capabilities=d, options=chrome_options)
-# driver = webdriver.Chrome("C:\\chromedriver.exe", desired_capabilities=d, options=chrome_options)
-
+chrome_options.set_capability('goog:loggingPrefs', {"performance": "ALL"})
+driver = webdriver.Remote(os.environ["HUB_URL"], options=chrome_options)
+# driver = webdriver.Chrome("C:\\chromedriver.exe", options=chrome_options)
 
 driver.get("https://www.pokergo.com/login")
 
@@ -64,6 +59,7 @@ queued_downloads = []
 try:
     while remaining:
         driver.get(COLLECTION_URL)
+        time.sleep(5)
         episode_container = driver.find_element("xpath", "//div[@class='container']")
         episodes = episode_container.find_elements("xpath", "//div[@class='row-wrapper row-with-margin']")
 
@@ -112,7 +108,7 @@ try:
             # print(event)
             if "response" in event["params"]:
                 # assuming the video player will only improve quality, get the last record for the m3u8 
-                if ".mp4.m3u8" in event["params"]["response"]["url"]:
+                if ".m3u8" in event["params"]["response"]["url"] and not "ping.gif" in event["params"]["response"]["url"]:
                     last_event = event["params"]["response"]["url"]
         if last_event != "":
             queued_downloads.append(["yt-dlp", "-o", f"{WRITE_LOCATION}{event_name.strip()}/{episode_name.strip()}.mp4", last_event]) 
@@ -128,7 +124,7 @@ try:
         driver.back()
         time.sleep(5) # give the back time to do it's thing. We will re-load the page anyway
         index+=1
-finally:
-    driver.quit()
+    finally:
+        driver.quit()
 for item in queued_downloads:
     subprocess.call(item)
