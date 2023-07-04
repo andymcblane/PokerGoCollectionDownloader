@@ -124,7 +124,7 @@ try:
         driver.back()
         time.sleep(5) # give the back time to do it's thing. We will re-load the page anyway
         index+=1
-    finally:
-        driver.quit()
+finally:
+    driver.quit()
 for item in queued_downloads:
     subprocess.call(item)
